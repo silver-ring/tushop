@@ -36,6 +36,7 @@ export class Problem2 {
 
     static calculateDistributeGoodies(goodies: Goodie[], employees: number): [Goodie[], number] {
 
+        // handle basic cases
         if (goodies.length === 0 || employees === 0) {
             return [[], 0];
         }
@@ -44,8 +45,11 @@ export class Problem2 {
             return [goodies, 0];
         }
 
+        // sort goodies based on price to exclude combinations which provide invalid solutions to reduce number of
+        // possible solutions
         goodies.sort((a, b) => a.price - b.price)
 
+        // handle basic cases
         if (goodies.length <= employees) {
             return [goodies, goodies[goodies.length -1].price - goodies[0].price]
         }
@@ -54,7 +58,10 @@ export class Problem2 {
         let chosenGoodies: Goodie[] = []
 
         for (let i= 0; i < goodies.length - employees; i++) {
+            // calculate price difference for window of number of employees
             const diff = goodies[i + employees -1].price - goodies[i].price
+
+            // check if the window price difference is higher than the minimum price calculated
             if (diff < minDiff) {
                 minDiff = diff
                 chosenGoodies = goodies.slice(i, i + employees)
